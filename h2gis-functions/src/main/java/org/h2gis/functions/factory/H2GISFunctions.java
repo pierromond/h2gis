@@ -31,6 +31,7 @@ import org.h2.api.Aggregate;
 import org.h2.tools.RunScript;
 import org.h2gis.api.Function;
 import org.h2gis.api.ScalarFunction;
+import org.h2gis.functions.io.dbf.DBFDriverFunction;
 import org.h2gis.functions.spatial.split.ST_LineIntersector;
 import org.h2gis.functions.spatial.split.ST_Split;
 import org.h2gis.functions.io.DriverManager;
@@ -41,6 +42,7 @@ import org.h2gis.functions.io.geojson.GeoJsonWrite;
 import org.h2gis.functions.io.geojson.ST_AsGeoJSON;
 import org.h2gis.functions.io.geojson.ST_GeomFromGeoJSON;
 import org.h2gis.functions.io.gpx.GPXRead;
+import org.h2gis.functions.io.json.JsonWrite;
 import org.h2gis.functions.io.kml.KMLWrite;
 import org.h2gis.functions.io.kml.ST_AsKml;
 import org.h2gis.functions.io.osm.OSMRead;
@@ -109,8 +111,10 @@ import org.h2gis.functions.spatial.distance.ST_LocateAlong;
 import org.h2gis.functions.spatial.distance.ST_LongestLine;
 import org.h2gis.functions.spatial.distance.ST_MaxDistance;
 import org.h2gis.functions.spatial.distance.ST_ProjectPoint;
+import org.h2gis.functions.spatial.distance.ST_ShortestLine;
 import org.h2gis.functions.spatial.earth.ST_GeometryShadow;
 import org.h2gis.functions.spatial.earth.ST_SunPosition;
+import org.h2gis.functions.spatial.earth.ST_Svf;
 import org.h2gis.functions.spatial.edit.ST_AddPoint;
 import org.h2gis.functions.spatial.edit.ST_AddZ;
 import org.h2gis.functions.spatial.edit.ST_CollectionExtract;
@@ -204,6 +208,7 @@ import org.h2gis.functions.spatial.properties.ST_Z;
 import org.h2gis.functions.spatial.properties.ST_ZMax;
 import org.h2gis.functions.spatial.properties.ST_ZMin;
 import org.h2gis.functions.spatial.snap.ST_Snap;
+import org.h2gis.functions.spatial.topography.ST_Drape;
 import org.h2gis.functions.spatial.topography.ST_TriangleAspect;
 import org.h2gis.functions.spatial.topography.ST_TriangleContouring;
 import org.h2gis.functions.spatial.topography.ST_TriangleDirection;
@@ -433,7 +438,11 @@ public class H2GISFunctions {
                 new ST_RemoveDuplicatedCoordinates(),
                 new ST_MakeValid(),
                 new ST_Point(),
-                new ST_Node()};
+                new ST_Node(),
+                new ST_Drape(),
+                new ST_Svf(),
+                new JsonWrite(),
+                new ST_ShortestLine()};
     }
 
     /**

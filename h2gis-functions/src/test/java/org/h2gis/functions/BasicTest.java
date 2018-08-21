@@ -21,7 +21,7 @@
 package org.h2gis.functions;
 
 import org.h2gis.functions.factory.H2GISFunctions;
-import com.vividsolutions.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.h2.value.DataType;
 import org.h2.value.Value;
 import org.h2gis.functions.factory.H2GISDBFactory;
@@ -35,12 +35,13 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import org.h2.jdbc.JdbcSQLException;
 
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 import org.h2gis.utilities.trigger.UpdateTrigger;
 import org.h2gis.utilities.SFSUtilities;
 import org.h2gis.utilities.TableLocation;
@@ -159,15 +160,40 @@ public class BasicTest {
 
         }
 
-        @Test
-        public void testSFSUtilities() throws Exception {
-            final Statement stat = connection.createStatement();
-            String catalog = connection.getCatalog();
-            stat.execute("drop schema if exists blah");
-            stat.execute("create schema blah");
-            stat.execute("create table blah.testSFSUtilities(id integer, the_geom point)");
-            List<String> geomFields = SFSUtilities.getGeometryFields(connection, new TableLocation(catalog, "blah", "testSFSUtilities"));
-            assertEquals(1, geomFields.size());
-            assertEquals("THE_GEOM", geomFields.get(0));
+    @Test
+    public void testSFSUtilities() throws Exception {
+        final Statement stat = connection.createStatement();
+        String catalog = connection.getCatalog();
+        stat.execute("drop schema if exists blah");
+        stat.execute("create schema blah");
+        stat.execute("create table blah.testSFSUtilities(id integer, the_geom point)");
+        List<String> geomFields = SFSUtilities.getGeometryFields(connection, new TableLocation(catalog, "blah", "testSFSUtilities"));
+        assertEquals(1, geomFields.size());
+        assertEquals("THE_GEOM", geomFields.get(0));
+    }
+
+    @Test
+    public void testSFSUtilitiesFirstGeometryFieldName1() throws Exception {
+        final Statement stat = connection.createStatement();
+        stat.execute("DROP TABLE IF EXISTS POINT3D");
+        stat.execute("CREATE TABLE POINT3D (gid int , the_geom GEOMETRY)");
+        stat.execute("INSERT INTO POINT3D (gid, the_geom) VALUES(1, ST_GeomFromText('POINT(0 12)', 27582))");
+        ResultSet rs = stat.executeQuery("SELECT * from POINT3D;");
+        String geomField = SFSUtilities.getFirstGeometryFieldName(rs);
+        assertEquals("THE_GEOM", geomField);
+    }
+    
+    @Test(expected = SQLException.class)
+    public void testSFSUtilitiesFirstGeometryFieldName2() throws Throwable {
+        try{
+        final Statement stat = connection.createStatement();
+        stat.execute("DROP TABLE IF EXISTS POINT3D");
+        stat.execute("CREATE TABLE POINT3D (gid int )");
+        stat.execute("INSERT INTO POINT3D (gid) VALUES(1)");
+        ResultSet rs = stat.executeQuery("SELECT * from POINT3D;");
+        SFSUtilities.getFirstGeometryFieldName(rs);
+        } catch (JdbcSQLException e) {
+            throw e.getOriginalCause();
         }
-        }
+    }
+}

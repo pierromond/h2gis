@@ -20,12 +20,12 @@
 
 package org.h2gis.functions.spatial.topography;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Triangle;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Triangle;
 
 /**
- * A factory used to create jDelaunay objects from JTS geometries.
+ * A factory used to create triangles from JTS geometries.
  *
  * @author Erwan Bocher
  */
@@ -43,13 +43,10 @@ public final class TINFeatureFactory {
          *
          * @param geom
          * @return
-         * @throws DelaunayError
-         * If the triangle can't be generated
          * @throws IllegalArgumentException
          * If there are not exactly 3 coordinates in geom.
          */
         public static Triangle createTriangle(Geometry geom) throws IllegalArgumentException {
-
                 Coordinate[] coordinates = geom.getCoordinates();
                 if (coordinates.length != 4) {
                         throw new IllegalArgumentException("The geometry must be a triangle");
