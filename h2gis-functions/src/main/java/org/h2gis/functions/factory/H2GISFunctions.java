@@ -47,6 +47,7 @@ import org.h2gis.functions.io.kml.KMLWrite;
 import org.h2gis.functions.io.kml.ST_AsKml;
 import org.h2gis.functions.io.osm.OSMRead;
 import org.h2gis.functions.io.osm.ST_OSMDownloader;
+import org.h2gis.functions.io.symuvia.SYMUVIARead;
 import org.h2gis.functions.io.shp.SHPRead;
 import org.h2gis.functions.io.shp.SHPWrite;
 import org.h2gis.functions.io.tsv.TSVRead;
@@ -406,6 +407,7 @@ public class H2GISFunctions {
                 new ST_LineIntersector(),        
                 new ST_OffSetCurve(),
                 new OSMRead(),
+                new SYMUVIARead(),
                 new ST_OSMDownloader(),
                 new ST_ProjectPoint(),
                 new ST_CollectionExtract(),

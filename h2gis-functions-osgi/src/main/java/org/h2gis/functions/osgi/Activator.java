@@ -29,6 +29,7 @@ import org.h2gis.functions.io.geojson.GeoJsonDriverFunction;
 import org.h2gis.functions.io.gpx.GPXDriverFunction;
 import org.h2gis.functions.io.kml.KMLDriverFunction;
 import org.h2gis.functions.io.osm.OSMDriverFunction;
+import org.h2gis.functions.io.symuvia.SYMUVIADriverFunction;
 import org.h2gis.functions.io.shp.SHPDriverFunction;
 import org.h2gis.functions.io.tsv.TSVDriverFunction;
 import org.osgi.framework.BundleActivator;
@@ -60,6 +61,7 @@ public class Activator implements BundleActivator {
         bc.registerService(DriverFunction.class, new GPXDriverFunction(), null);
         bc.registerService(DriverFunction.class, new GeoJsonDriverFunction(), null);
         bc.registerService(DriverFunction.class, new OSMDriverFunction(), null);
+        bc.registerService(DriverFunction.class, new SYMUVIADriverFunction(), null);
         bc.registerService(DriverFunction.class, new KMLDriverFunction(), null);
         bc.registerService(DriverFunction.class, new CSVDriverFunction(), null);
         bc.registerService(DriverFunction.class, new TSVDriverFunction(), null);
